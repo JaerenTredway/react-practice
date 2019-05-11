@@ -8,15 +8,54 @@
     <title>React Practice</title>
     <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style media="screen">
+        .heading {
+            color: pink;
+        }
+    </style>
 </head>
 
 <body>
     <div id="root"></div>
+    <div id="root2"></div>
+    <div id="root3"></div>
+
+    <!-- This is the standard way to render into the browser using React, it requires the two React scripts from unpkg.com -->
     <script type="text/javascript">
         ReactDOM.render(
-            React.createElement("h1", null, "Helloo Woorld"),
+            React.createElement(
+                "div",
+                null,
+                React.createElement(
+                    "h1", 
+                    {"style": {"color": "red"}},
+                    "Helloooooookey Woorldenkoorld!!!"
+                )
+            ),
             document.getElementById("root")
+        );    
+    </script>
+    
+    <!--This script uses JSX/ Babel (Javascript XML), it requires the Babel script from unpkg.com  -->
+    <script type="text/babel">
+        let city = "Madrid";
+        
+        ReactDOM.render(
+            <h1 className="heading">Heello {city}</h1>, //see style in html head, also note: use 'className' not 'class' in React
+            document.getElementById("root2")
         );
     </script>
+    
+    <!-- making a custom React html tag: -->
+    <script type="text/babel">
+        const Hello = () => <h1>Welcome to React, beware!</h1>
+        
+        ReactDOM.render(
+            <Hello />,
+            document.getElementById("root3")
+        );
+    </script>
+
 </body>
 </html>
