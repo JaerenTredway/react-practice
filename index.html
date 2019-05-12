@@ -9,7 +9,9 @@
     <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
     <style media="screen">
+        /* you must refer to this as 'className' in the body, not 'class': */
         .heading {
             color: pink;
         }
@@ -30,7 +32,7 @@
                 React.createElement(
                     "h1", 
                     {"style": {"color": "red"}},
-                    "Helloooooookey Woorldenkoorld!!!"
+                    "Hellooo Wooorld!!!"
                 )
             ),
             document.getElementById("root")
@@ -47,12 +49,22 @@
         );
     </script>
     
-    <!-- making a custom React html tag: -->
+    <!-- rendering using a React component: -->
     <script type="text/babel">
-        const Hello = () => <h1>Welcome to React, beware!</h1>
+        const Hello = (props) => {
+            // this uses the 'props' object for content:
+            console.log(props);
+            return (
+                <div className="heading">
+                    <h1>Welcome to {props.library}!</h1>
+                    <p>{props.message}</p>
+                </div>
+            )
+        }        
         
         ReactDOM.render(
-            <Hello />,
+            // to render the component, use the capitalized component name as an html tag:
+            <Hello library="React" message="Enjoy!"/>,
             document.getElementById("root3")
         );
     </script>
