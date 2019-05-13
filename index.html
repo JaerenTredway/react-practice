@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>React Practice</title>
-    <script src="https://unpkg.com/react@16.7.0/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/react@16.8.6/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <style media="screen">
@@ -22,8 +22,14 @@
     <div id="root"></div>
     <div id="root2"></div>
     <div id="root3"></div>
+    <div id="root4"></div>
+    <div id="root5"></div>
+    <div id="root6"></div>
+    <div id="root7"></div>
+    <div id="root8"></div>
 
-    <!-- This is the standard way to render into the browser using React, it requires the two React scripts from unpkg.com -->
+    <!-- ************************************************************************************** -->
+    <!-- 1. This is the standard way to render into the browser using React, it requires the two React scripts from unpkg.com -->
     <script type="text/javascript">
         ReactDOM.render(
             React.createElement(
@@ -39,7 +45,8 @@
         );    
     </script>
     
-    <!--This script uses JSX/ Babel (Javascript XML), it requires the Babel script from unpkg.com  -->
+    <!-- ***************************************************************************************** -->
+    <!-- 2. This script uses JSX/ Babel (Javascript XML), it requires the Babel script from unpkg.com  -->
     <script type="text/babel">
         let city = "Madrid";
         
@@ -49,10 +56,13 @@
         );
     </script>
     
-    <!-- rendering using a React component: -->
+    <!-- ********************************************************************* -->
+    <!-- 3. rendering using a React component: -->
     <script type="text/babel">
         const Hello = (props) => {
-            // this uses the 'props' object for content:
+            // this uses the 'props' object for content
+            // you can 'destructure' the object like this:
+            // const Hello = ({library, message}) => {
             console.log(props);
             return (
                 <div className="heading">
@@ -68,6 +78,146 @@
             document.getElementById("root3")
         );
     </script>
+    
+    <!-- ****************************************************************************** -->
+    <!-- 4. rendering using an App component: -->
 
-</body>
+    <script type="text/babel">
+        
+        const Lake = ({name}) => <h1>{name}</h1>;
+        
+        // the App component can store a collection of other components:
+        const App = () => (
+            <div>
+                <Lake name="Lake Tahoe" />
+                <Lake name="Angora Lake" />
+                <Lake name="Shirley Lake" />
+            </div>
+        );
+        
+        ReactDOM.render(
+            <App />,
+            document.getElementById("root4")
+        );
+    </script>
+
+    
+    <!-- ****************************************************************************** -->
+    <!-- 5. rendering using a JavaScript class component: -->
+    <script type="text/babel">
+        
+        const Pond = ({name}) => <h1>{name}</h1>;
+        
+        // build a Javascript class:
+        class App extends React.Component {
+            // add a 'state' object with the initial state:
+            state = {
+                loggedIn: false
+            }
+            
+            //class methods/ event functions:
+            logIn = () => this.setState({loggedIn: true})
+            logOut = () => this.setState({loggedIn: false})
+            
+            // the JSX render function: 
+            // (JSX expressions are in curly brackets)
+            render() {
+                return (
+                    <div>
+                        {/* bind the class's event functions to UI elements in the DOM: */} 
+                        <button onClick={this.logIn}>Log In</button>
+                        <button onClick={this.logOut}>Log Out</button>
+                        
+                        <div>
+                            {/* check the App's current state object: */}
+                            The user is {this.state.loggedIn ? "logged in" : "not logged in"}.
+                        </div>
+                    
+                        <Pond name="Michigan Pond" />
+                        <Pond name="Mud Pond" />
+                        <Pond name="Arizona Pond" />
+                    </div>
+                )
+            }
+        }
+        
+        ReactDOM.render(
+            <App />,
+            document.getElementById("root5")
+        );
+    </script>
+    
+    <!-- ********************************************************************** -->
+    <!-- 6. conditionally rendering React components: -->
+    <script type="text/babel">
+        
+        const Swim = ({name}) => <h1>{name}</h1>;
+        const Ski = ({name}) => <h1>{name}</h1>;
+        
+        const App3 = ({summer}) => (
+            <div>
+                {summer ? <Swim name="Lake Tahoe" /> : <Ski name="K2"/>}
+            </div>
+        )
+        
+        {/* render component based on whether the 'summer' arg is truthy or falsey */}
+        ReactDOM.render(
+            <App3 summer={false}/>,
+            document.getElementById("root6")
+        );
+    </script>
+    
+    <!-- ********************************************************************** -->
+    <!-- 7. rendering an unordered list from an array variable: -->
+    <script type="text/babel">
+        
+        const lakeList = [
+            "Echo Lake",
+            "Maud Lake",
+            "Cascade Lake"
+        ];
+        
+        const App = ({lakes}) => (
+            <ul>
+                {/* add 'keys' (i) so React knows exactly how to access each element: */}
+                {lakes.map((lake, i) =>
+                    <li key={i}>{lake}</li>
+                )}
+            </ul>
+        )
+        
+        {/* render array of lakes names as an unordered list */}
+        ReactDOM.render(
+            <App lakes={lakeList}/>,
+            document.getElementById("root7")
+        );
+    </script>
+    
+    <!-- ********************************************************************** -->
+    <!-- 8. rendering from keyed objects: -->
+    <script type="text/babel">
+        
+        const lakeList = [
+            {id: 1, name: "Echo Lake", trailhead: "Echo Lake" },
+            {id: 2, name: "Maud Lake", trailhead: "Wright's Lake" },
+            {id: 3, name: "Cascade Lake", trailhead: "Bayview" }
+        ];
+        
+        const App = ({lakes}) => (
+            <ul>
+                {/* add another way of using 'keys' (lake.id) so React knows exactly how to access each element: */}
+                {lakes.map(lake =>
+                    <li key={lake.id}>{lake.name}, Trailhead: {lake.trailhead}</li>
+                )}
+            </ul>
+        )
+        
+        {/* render array of lakes names as an unordered list */}
+        ReactDOM.render(
+            <App lakes={lakeList}/>,
+            document.getElementById("root8")
+        );
+    </script>
+    
+  </body>
 </html>
